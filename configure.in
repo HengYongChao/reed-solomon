@@ -1,0 +1,39 @@
+# Process this file with autoconf to produce a configure script.
+# Copyright 2002 Phil Karn, KA9Q
+# May be used under the terms of the GNU Public License (GPL)
+
+AC_INIT(encode_rs.c)
+SO_NAME=4
+SO_VERSION=4.0.0
+AC_SUBST(SO_NAME)
+AC_SUBST(SO_VERSION)
+
+dnl Checks for programs.
+AC_PROG_CC
+if test $GCC != "yes"
+then
+        AC_MSG_ERROR([Need GNU C compiler])
+fi
+dnl Checks for libraries.
+AC_CHECK_LIB(c, malloc)
+
+dnl Checks for header files.
+AC_CHECK_HEADERS(string.h)
+if test -z "$HAVE_string.h"
+then
+	AC_MSG_ERROR([Need string.h])
+fi
+
+AC_CANONICAL_SYSTEM
+case $target_cpu in
+i386|i486|i586|i686)
+        ARCH_OPTION=-march=$target_cpu
+        ;;
+esac
+
+AC_SUBST(ARCH_OPTION)
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(memset memmove)
+
+AC_OUTPUT(makefile)
